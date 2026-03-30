@@ -90,14 +90,7 @@ export default function ThemeSelector() {
                         setTheme(t.name)
                         setIsOpen(false)
                       }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
-                        themeName === t.name
-                          ? 'bg-gray-50 ring-2 ring-offset-2'
-                          : 'hover:bg-gray-50'
-                      }`}
-                      style={{
-                        ringColor: themeName === t.name ? t.colors.primary : undefined,
-                      }}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-gray-50"
                     >
                       {/* Color Preview */}
                       <div className="flex gap-1">
