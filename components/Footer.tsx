@@ -130,7 +130,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
               <p className="text-gray-400 text-sm">
-              대표자: 김정식 | 사업자등록번호: 544-19-02359
+              대표자: 김정식 | 사업자등록번호: 544-19-02359 | 통신판매업: 제 2026-화성만세-0114호
             </p>
             <p className="text-gray-400 text-sm">
               © 2025 에이원PRO. All rights reserved.
