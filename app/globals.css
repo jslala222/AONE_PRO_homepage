@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 테마 CSS 변수 - 동적으로 변경됨 */
+:root {
+  --theme-primary: #3b82f6;
+  --theme-secondary: #8b5cf6;
+  --theme-accent: #ec4899;
+  --theme-gradient-start: #3b82f6;
+  --theme-gradient-mid: #8b5cf6;
+  --theme-gradient-end: #ec4899;
+  --theme-background: #ffffff;
+  --theme-card-bg: rgba(255, 255, 255, 0.8);
+  --theme-text: #111827;
+  --theme-text-muted: #6b7280;
+  --theme-border: #e5e7eb;
+  --theme-shadow: rgba(59, 130, 246, 0.2);
+  --theme-glow: rgba(59, 130, 246, 0.4);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, Zap } from 'lucide-react'
+import ThemeSelector from './ThemeSelector'
+import { useTheme } from './ThemeProvider'
 
 const navItems = [
   {
@@ -32,6 +34,7 @@ const navItems = [
 ]
 
 export default function Header() {
+  const { theme } = useTheme()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
@@ -50,21 +53,39 @@ export default function Header() {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/80 backdrop-blur-xl shadow-lg shadow-blue-500/5'
+          ? 'bg-white/80 backdrop-blur-xl shadow-lg'
           : 'bg-transparent'
       }`}
+      style={{ 
+        boxShadow: isScrolled ? `0 10px 40px ${theme.colors.shadow}` : 'none'
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+              <div 
+                className="w-10 h-10 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300"
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary}, ${theme.colors.accent})`
+                }}
+              >
                 <Zap className="w-6 h-6 text-white" />
               </div>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
+              <div 
+                className="absolute inset-0 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary}, ${theme.colors.accent})`
+                }}
+              />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span 
+              className="text-xl font-bold bg-clip-text text-transparent"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${theme.colors.primary}, ${theme.colors.secondary})`
+              }}
+            >
               에이원PRO
             </span>
           </Link>
@@ -82,9 +103,12 @@ export default function Header() {
                   href={item.href}
                   className={`flex items-center gap-1 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     isScrolled
-                      ? 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-white/50'
+                      ? 'text-gray-700 hover:underline'
+                      : 'text-gray-700 hover:underline'
                   }`}
+                  style={{
+                    textDecorationColor: theme.colors.primary
+                  }}
                 >
                   {item.title}
                   {item.submenu && (
@@ -100,13 +124,15 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 w-48 py-2 bg-white rounded-xl shadow-xl shadow-blue-500/10 border border-gray-100"
+                      className="absolute top-full left-0 mt-2 w-48 py-2 bg-white rounded-xl border border-gray-100"
+                      style={{ boxShadow: `0 20px 40px ${theme.colors.shadow}` }}
                     >
                       {item.submenu.map((sub) => (
                         <Link
                           key={sub.title}
                           href={sub.href}
-                          className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:underline transition-colors"
+                          style={{ textDecorationColor: theme.colors.primary }}
                         >
                           {sub.title}
                         </Link>
@@ -120,9 +146,14 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center gap-4">
+            <ThemeSelector />
             <Link
               href="/contact"
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transform hover:scale-105 transition-all duration-300"
+              className="px-5 py-2.5 rounded-full text-white font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              style={{
+                background: `linear-gradient(to right, ${theme.colors.primary}, ${theme.colors.secondary})`,
+                boxShadow: `0 10px 20px ${theme.colors.shadow}`
+              }}
             >
               무료 상담
             </Link>
@@ -132,6 +163,7 @@ export default function Header() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            style={{ color: theme.colors.text }}
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -157,7 +189,8 @@ export default function Header() {
                   <Link
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-3 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-medium transition-colors"
+                    className="block px-4 py-3 rounded-lg text-gray-700 font-medium transition-colors"
+                    style={{ textDecorationColor: theme.colors.primary }}
                   >
                     {item.title}
                   </Link>
@@ -168,7 +201,8 @@ export default function Header() {
                           key={sub.title}
                           href={sub.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="block px-4 py-2 text-sm text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-500 rounded-lg transition-colors"
+                          style={{ textDecorationColor: theme.colors.primary }}
                         >
                           {sub.title}
                         </Link>
@@ -181,7 +215,10 @@ export default function Header() {
                 <Link
                   href="/contact"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-center px-5 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium"
+                  className="block w-full text-center px-5 py-3 rounded-full text-white font-medium"
+                  style={{
+                    background: `linear-gradient(to right, ${theme.colors.primary}, ${theme.colors.secondary})`
+                  }}
                 >
                   무료 상담
                 </Link>
